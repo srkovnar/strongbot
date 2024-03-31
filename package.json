@@ -1,0 +1,22 @@
+{
+  "name": "strongbot",
+  "version": "1.0.0",
+  "description": "Repository for Discord bot StrongBot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srkovnar/strongbot.git"
+  },
+  "author": "Sam Kovnar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/srkovnar/strongbot/issues"
+  },
+  "homepage": "https://github.com/srkovnar/strongbot#readme",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  }
+}
