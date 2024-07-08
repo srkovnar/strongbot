@@ -18,7 +18,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] | [GatewayIntent
 client.commands = getCommands('./commands');
 
 //client.once(Events.ClientReady, c =>{
-client.once(Discord.Events.ClientReady, c =>{
+client.once(Events.ClientReady, c =>{
     console.log(`Logged in as ${c.user.tag}`);
 
     //const ping = new SlashCommandBuilder()
@@ -51,7 +51,7 @@ client.once(Discord.Events.ClientReady, c =>{
 // Episode 5 is about splitting events off into their own folders. I think that's unnecessary. So I'm skipping for now.
 
 //client.on(Events.InteractionCreate, interaction => {
-client.on(Discord.Events.InteractionCreate, interaction => {
+client.on(Events.InteractionCreate, interaction => {
     if(!interaction.isChatInputCommand()) return; //Make sure the interaction is a chat command.
     //if(interaction.commandName === "ping"){
     //    interaction.reply("Pong!");
@@ -97,11 +97,7 @@ client.on(Discord.Events.InteractionCreate, interaction => {
  * I would need to add some "awaits" to transition to using that method.
  */
 
-//https://discord.gg/qpmNFuUN
-
-client.on("guildMemberAdd", member => {
-//client.on(Discord.Events.GuildMemberAdd, member => {
-//client.on(Events.guildMemberAdd, member => {
+client.on(Events.GuildMemberAdd, member => {
     // member = instance of a user within a guild (server)
     console.log(`sending welcome message to user ${member.user}`);
     //const welcomeRole = member.guild.roles.cache.find(role => role.name === 'member');// Could also specify ID instead of name. Can I use this elsewhere?
