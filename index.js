@@ -1,10 +1,13 @@
 //console.log("Hello, world!");
 
-const { Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection } = require('discord.js')
+const Discord = require('discord.js');
+//const {Client, Intents} = require('discord.js');
+const { Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection, Intents } = require('discord.js')
 const { token, guildID } = require('./config.json');
 const fs = require('node:fs');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] }); 
+//const client = new Client({ intents: [GatewayIntentBits.Guilds] }); 
+const client = new Client({ intents: [GatewayIntentBits.Guilds] | [GatewayIntentBits.GuildMembers] | [GatewayIntentBits.MessageContent] | [GatewayIntentBits.GuildMessages] }); 
 
 // Guilds = discord servers
 // Client = the bot
@@ -14,7 +17,8 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 /* load commands */
 client.commands = getCommands('./commands');
 
-client.once(Events.ClientReady, c =>{
+//client.once(Events.ClientReady, c =>{
+client.once(Discord.Events.ClientReady, c =>{
     console.log(`Logged in as ${c.user.tag}`);
 
     //const ping = new SlashCommandBuilder()
@@ -46,7 +50,8 @@ client.once(Events.ClientReady, c =>{
 
 // Episode 5 is about splitting events off into their own folders. I think that's unnecessary. So I'm skipping for now.
 
-client.on(Events.InteractionCreate, interaction => {
+//client.on(Events.InteractionCreate, interaction => {
+client.on(Discord.Events.InteractionCreate, interaction => {
     if(!interaction.isChatInputCommand()) return; //Make sure the interaction is a chat command.
     //if(interaction.commandName === "ping"){
     //    interaction.reply("Pong!");
@@ -76,11 +81,42 @@ client.on(Events.InteractionCreate, interaction => {
     console.log(interaction);
 });
 
+
+/* 
+ * EVENT: Member Join Event
+ * 
+ * Sending welcome messages and managing welcome roles requires you to go into the
+ * Discord Developer Portal and activate the following for your bot:
+ * - Presence Intent
+ * - Server Members Intent
+ * - Message Content Intent
+ * 
+ * I haven't actually added that functionality yet... will do soon.
+ * 
+ * I'm also not using the recommended event handler yet because that's stupid, will do that later.
+ * I would need to add some "awaits" to transition to using that method.
+ */
+
+//https://discord.gg/qpmNFuUN
+
+client.on("guildMemberAdd", member => {
+//client.on(Discord.Events.GuildMemberAdd, member => {
+//client.on(Events.guildMemberAdd, member => {
+    // member = instance of a user within a guild (server)
+    console.log(`sending welcome message to user ${member.user}`);
+    //const welcomeRole = member.guild.roles.cache.find(role => role.name === 'member');// Could also specify ID instead of name. Can I use this elsewhere?
+    //member.roles.add(welcomeRole);
+
+    const welcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'general');
+    welcomeChannel.fetch();
+    welcomeChannel.send(`Hey there, ${member.user}`);
+});
+
 client.login(token);
 
 // Search a directory and turn all .js files into a command collection.
 function getCommands(dir) {
-    let commands = new Collection();
+    let commands = new Discord.Collection();
     const commandFiles = getFiles(dir);
 
     // Package each of our command files into a nice little command object in a nice little commands collection.
