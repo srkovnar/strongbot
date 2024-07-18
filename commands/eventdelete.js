@@ -1,0 +1,52 @@
+const { SlashCommandBuilder, GuildScheduledEventManager, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType, PermissionFlagsBits } = require('discord.js');
+const { token, guildId, clientId } = require('../config.json');
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName("eventdelete")
+        .setDescription('Deletes an event')
+        .addUserOption((option) =>
+            option
+                .setName("id")
+                .setDescription("ID of Event to be deleted")
+                .setRequired(false)
+        )
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageEvents),// I wanted to restrict this command to users
+
+    async execute(interaction){// async = lines in this function might not happen in order.
+        const guild = await interaction.client.guilds.cache.get(guildId);
+
+        if (!guild) {
+            return console.log("ERROR: Guild not found!");
+        }
+        
+        const event_manager = new GuildScheduledEventManager(guild);
+        //const event_manager = guild.scheduledEvents;
+
+        let id = interaction.id
+
+        if (id) {
+            console.log(`eventdelete: Deleting event with ID ${id}`);
+            console.log("(not implemented yet)");
+            interaction.reply(`Event ${id} deleted. (except not actually because this isn't implemented yet)`)
+        }
+        else {
+            interaction.reply("No ID provided; doing nothing.");
+        }
+
+        // console.log("===CACHE===");
+        // console.log(event_manager.cache);
+        // // ^ This returns no events because we just made a new event manager.
+        // // To get the list of events, we have to use the existing event manager!
+
+
+        // console.log(guild.channels.cache);
+        // //console.log(event_manager.fetch())
+        // console.log(event_manager.holds);
+        // console.log(guild.scheduledEvents.cache);
+
+        //var guild_events = guild.GetEventsAsync();
+
+        //interaction.reply("All done");
+    }
+}// Stuff in the brackets is treated as JSON.

@@ -105,6 +105,8 @@ module.exports = {
 
         const message = await channel.send({embeds: [embed]});
 
+        console.log(`HERE IS THE EMOJI STRUCTURE: ${message.guild.emojis.cache}`);
+
         for (let k = 0; k < (options.length); k++) {
             let option = options[k];
             //let class_emoji = new Emoji(client, "one");
@@ -113,7 +115,7 @@ module.exports = {
                 let emoji = message.guild.emojis.cache.find(emoji => emoji.name === emoji_names[k]);
                 //let emoji = guild.emojis.cache.find(emoji => emoji.name === "one");
                 
-                console.log(emoji);
+                //console.log(emoji);
 
                 //let poo_emoji = new Emoji(interaction.client, emoji);
                 // I thought maybe you're supposed to use the Emoji class. That doesn't seem to be the case.
@@ -121,7 +123,7 @@ module.exports = {
                 //message.react("one");
                 //message.react(emoji);
                 
-                console.log(emoji_stupid_ugly_array[k].name);
+                //console.log(emoji_stupid_ugly_array[k].name);
 
                 message.react(emoji_stupid_ugly_array[k]);
                 //message.react(emoji);
