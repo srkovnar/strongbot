@@ -6,6 +6,8 @@ const { Client, Events, GatewayIntentBits, SlashCommandBuilder, Collection, Inte
 const { token, guildID } = require('./config.json');
 const fs = require('node:fs');
 
+const path = require('node:path');
+
 //const client = new Client({ intents: [GatewayIntentBits.Guilds] }); 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] | [GatewayIntentBits.GuildMembers] | [GatewayIntentBits.MessageContent] | [GatewayIntentBits.GuildMessages] }); 
 
@@ -15,38 +17,37 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] | [GatewayIntent
 // For example, that's how you get the ability to copy a server's ID.
 
 /* load commands */
-client.commands = getCommands('./commands');
+client.commands = getCommands('./commands')
 
-//client.once(Events.ClientReady, c =>{
 client.once(Events.ClientReady, c =>{
-    console.log(`Logged in as ${c.user.tag}`);
-
-    //const ping = new SlashCommandBuilder()
-    //    .setName('ping')
-    //    .setDescription('Replies with "Pong!"')
-    //const hello = new SlashCommandBuilder()
-    //    .setName('hello')
-    //    .setDescription('Replies to you with your name')
-    //    .addUserOption(option =>
-    //        option
-    //            .setName("user")
-    //            .setDescription("User to say 'hi' to")
-    //            .setRequired(false)
-    //        )
-    //const echo = new SlashCommandBuilder()
-    //    .setName('echo')
-    //    .setDescription('Repeats a string')
-    //    .addStringOption(option =>
-    //        option
-    //            .setName("string")
-    //            .setDescription("String to be repeated")
-    //            .setRequired(true)
-    //        )
-
-    //client.application.commands.create(ping, "1219786559302140025"); //That's the guild ID. We only want this command in this one guild.
-    //client.application.commands.create(hello, "1219786559302140025");
-    //client.application.commands.create(echo, "1219786559302140025");
-})
+     console.log(`Logged in as ${c.user.tag}`);
+ 
+     //const ping = new SlashCommandBuilder()
+     //    .setName('ping')
+     //    .setDescription('Replies with "Pong!"')
+     //const hello = new SlashCommandBuilder()
+     //    .setName('hello')
+     //    .setDescription('Replies to you with your name')
+     //    .addUserOption(option =>
+     //        option
+     //            .setName("user")
+     //            .setDescription("User to say 'hi' to")
+     //            .setRequired(false)
+     //        )
+     //const echo = new SlashCommandBuilder()
+     //    .setName('echo')
+     //    .setDescription('Repeats a string')
+     //    .addStringOption(option =>
+     //        option
+     //            .setName("string")
+     //            .setDescription("String to be repeated")
+     //            .setRequired(true)
+     //        )
+ 
+     //client.application.commands.create(ping, "1219786559302140025"); //That's the guild ID. We only want this command in this one guild.
+     //client.application.commands.create(hello, "1219786559302140025");
+     //client.application.commands.create(echo, "1219786559302140025");
+ })
 
 // Episode 5 is about splitting events off into their own folders. I think that's unnecessary. So I'm skipping for now.
 
@@ -78,35 +79,65 @@ client.on(Events.InteractionCreate, interaction => {
         console.error(error);
     }
 
-    console.log(interaction);
+    //console.log(interaction);
+    // ^ This is probably good practice, but this is too noisy for me personally.
 });
 
 
-/* 
- * EVENT: Member Join Event
- * 
- * Sending welcome messages and managing welcome roles requires you to go into the
- * Discord Developer Portal and activate the following for your bot:
- * - Presence Intent
- * - Server Members Intent
- * - Message Content Intent
- * 
- * I haven't actually added that functionality yet... will do soon.
- * 
- * I'm also not using the recommended event handler yet because that's stupid, will do that later.
- * I would need to add some "awaits" to transition to using that method.
- */
 
-client.on(Events.GuildMemberAdd, member => {
-    // member = instance of a user within a guild (server)
-    console.log(`sending welcome message to user ${member.user}`);
-    //const welcomeRole = member.guild.roles.cache.find(role => role.name === 'member');// Could also specify ID instead of name. Can I use this elsewhere?
-    //member.roles.add(welcomeRole);
 
-    const welcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'general');
-    welcomeChannel.fetch();
-    welcomeChannel.send(`Hey there, ${member.user}`);
-});
+// const Guild = require("./models/guild");
+// 
+// client.on(Events.GuildMemberAdd, member => {
+//     // member = instance of a user within a guild (server)
+//     console.log(`Sending welcome message to user ${member.user}`);
+//     //const welcomeRole = member.guild.roles.cache.find(role => role.name === 'member');// Could also specify ID instead of name. Can I use this elsewhere?
+//     //member.roles.add(welcomeRole);
+// 
+//     // const welcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'general');
+//     // welcomeChannel.fetch();
+//     // welcomeChannel.send(`Hey there, ${member.user}`);
+// 
+//     // New method of doing welcome message
+//     // See also: guild.js, set-welcome-channel.js
+//     console.log(`Looking for an entry with guild ID ${member.guild.id}`);
+//     const guild_db = Guild.findOne({ where: { id: member.guild.id}});
+// 
+//     if (!guild_db) {
+//         console.log("Couldn't find an entry for this guild in the welcome database.");
+//     }
+//     else {
+//         console.log("Found an entry for this guild ID.");
+//         console.log(`${guild_db}`);
+//         console.log(`id: ${guild_db.id}`);
+//         console.log(`welcomeChannelId: ${guild_db.welcomeChannelId}`);
+//         console.log(`welcomeRoleId: ${guild_db.welcomeRoleId}`);
+//         console.log(`createdAt: ${guild_db.createdAt}`);
+//     }
+// 
+//     if (guild_db.welcomeChannelId) {
+//         console.log("Welcome channel exists");
+//         const welcomeChannel = member.guild.channels.fetch(guild_db.welcomeChannelId);
+//         welcomeChannel.send(`Welcome ${member.user} to the server!`);
+//     }
+//     else {
+//         console.log("Welcome channel has not been set yet.");
+//     }
+// });
+
+const eventsPath = path.join(__dirname, "events");
+eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
+
+for (const file of eventFiles) {
+    const filePath = path.join(eventsPath, file);
+    const event = require(filePath);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args));
+    }
+    else {
+        client.on(event.name, (...args) => event.execute(...args));
+    }
+}
 
 client.login(token);
 
