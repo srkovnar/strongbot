@@ -1,6 +1,11 @@
+# Ignore installed dependencies
 node_modules
-node_modules/*
 
+# Ignore the scrapyard
+scrapyard
+
+# Do not push keys to git!
 config.json
 
+# Ignore database(s)
 *.sqlite
