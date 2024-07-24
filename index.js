@@ -84,50 +84,9 @@ client.on(Events.InteractionCreate, interaction => {
 });
 
 
-
-
-// const Guild = require("./models/guild");
-// 
-// client.on(Events.GuildMemberAdd, member => {
-//     // member = instance of a user within a guild (server)
-//     console.log(`Sending welcome message to user ${member.user}`);
-//     //const welcomeRole = member.guild.roles.cache.find(role => role.name === 'member');// Could also specify ID instead of name. Can I use this elsewhere?
-//     //member.roles.add(welcomeRole);
-// 
-//     // const welcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'general');
-//     // welcomeChannel.fetch();
-//     // welcomeChannel.send(`Hey there, ${member.user}`);
-// 
-//     // New method of doing welcome message
-//     // See also: guild.js, set-welcome-channel.js
-//     console.log(`Looking for an entry with guild ID ${member.guild.id}`);
-//     const guild_db = Guild.findOne({ where: { id: member.guild.id}});
-// 
-//     if (!guild_db) {
-//         console.log("Couldn't find an entry for this guild in the welcome database.");
-//     }
-//     else {
-//         console.log("Found an entry for this guild ID.");
-//         console.log(`${guild_db}`);
-//         console.log(`id: ${guild_db.id}`);
-//         console.log(`welcomeChannelId: ${guild_db.welcomeChannelId}`);
-//         console.log(`welcomeRoleId: ${guild_db.welcomeRoleId}`);
-//         console.log(`createdAt: ${guild_db.createdAt}`);
-//     }
-// 
-//     if (guild_db.welcomeChannelId) {
-//         console.log("Welcome channel exists");
-//         const welcomeChannel = member.guild.channels.fetch(guild_db.welcomeChannelId);
-//         welcomeChannel.send(`Welcome ${member.user} to the server!`);
-//     }
-//     else {
-//         console.log("Welcome channel has not been set yet.");
-//     }
-// });
-
+/* Set up all other events */
 const eventsPath = path.join(__dirname, "events");
 eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
-
 for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);
     const event = require(filePath);
@@ -139,6 +98,7 @@ for (const file of eventFiles) {
     }
 }
 
+/* Log in to Discord */
 client.login(token);
 
 // Search a directory and turn all .js files into a command collection.
