@@ -6,6 +6,7 @@ scrapyard
 
 # Do not push keys to git!
 config.json
+*config.json
 
 # Ignore database(s)
 *.sqlite
