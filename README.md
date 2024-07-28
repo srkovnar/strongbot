@@ -22,4 +22,7 @@ You must make a file named `config.json` which looks like this:
 ## References
 
 [Google Calendar API Quickstart Guide with Node.js](https://developers.google.com/calendar/api/quickstart/nodejs)
+
 [Google Cloud Console](https://console.cloud.google.com)
+
+[OAuth Developer Playground](https://developers.google.com/oauthplayground)
