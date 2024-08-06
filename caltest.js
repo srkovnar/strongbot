@@ -11,7 +11,7 @@ const { OAuth2 } = google.auth;
 const oauth2_client = new OAuth2(client_id, client_secret);
 
 oauth2_client.setCredentials({
-    refresh_token: refresh_token // Comes from developers.google.com/oauthplayground.
+    refresh_token: refresh_token // Comes from developers.google.com/oauthplayground. I think this determines which google account you're using.
 });
 
 const calendar = google.calendar({
@@ -90,3 +90,6 @@ calendar.freebusy.query({
     // Only do this if the event array isn't empty (i.e. we're busy)
     console.log("Sorry, I'm busy");
 });
+
+// An alternative to the freebusy query is to just use calendar.insert.
+// That would just add the event without querying anything.
